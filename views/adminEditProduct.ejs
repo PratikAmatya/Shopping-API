@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<script
+			src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+			integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+			crossorigin="anonymous"
+		></script>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+			crossorigin="anonymous"
+		/>
+		<!-- Font Awesome CDN -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+			integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+
+		<title>Admin Dashboard</title>
+
+		<style>
+			body {
+				font-family: 'Roboto', sans-serif;
+			}
+
+			nav {
+				font-size: 1em;
+			}
+			.main {
+				font-size: 1.1em;
+				margin-bottom: 0;
+				margin: 0 10em;
+				padding: 0;
+			}
+			.form-title {
+				justify-content: center;
+			}
+			.backLink {
+				margin-top: 2em;
+				margin-left: 2em;
+				font-size: 1.1em;
+			}
+			.submitDiv {
+				justify-content: center;
+			}
+
+			.backLink a {
+				text-decoration: none;
+			}
+
+			@media only screen and (max-width: 1000px) {
+				.main {
+					margin: 0 1em;
+				}
+				.backLink {
+					margin-bottom: 1em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Online Pasal</a>
+			<button
+				class="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#navbarText"
+				aria-controls="navbarText"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="/admin/product"
+							>Products<span class="sr-only">(current)</span></a
+						>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/admin/order">Orders</a>
+					</li>
+				</ul>
+				<span class="navbar-text font-weight-bold text-white"
+					><a href="/admin/logout"
+						>Logout <i class="fas fa-sign-out-alt"></i>
+					</a>
+				</span>
+			</div>
+		</nav>
+
+		<div class="backLink">
+			<a href="/admin/product" class="text-decoration-none">
+				<i class="fas fa-arrow-alt-circle-left fa-lg"></i>
+				<span class="ml-2 font-weight-bold">Back to Product Page</span>
+			</a>
+		</div>
+
+		<div class="jumbotron bg-white main">
+			<div class="row text-center form-title">
+				<h2>Edit Product</h2>
+				<span id="pID" class="d-none"><%= productId %></span>
+			</div>
+
+			<form id="editForm">
+				<div class="form-group row">
+					<label for="productName" class="col-sm-2 col-form-label"
+						>Product Name</label
+					>
+					<div class="col-sm-10">
+						<input
+							type="text"
+							class="form-control"
+							id="productName"
+							placeholder="Product Name"
+							minlength="3"
+							name="productName"
+							required
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="description" class="col-sm-2 col-form-label"
+						>Description</label
+					>
+
+					<div class="col-sm-10">
+						<textarea
+							name="description"
+							id="description"
+							rows="5"
+							class="form-control"
+							placeholder="Product Description"
+							required
+							minlength="10"
+							maxlength="280"
+						></textarea>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="price" class="col-sm-2 col-form-label">Price</label>
+					<div class="col-sm-10">
+						<input
+							class="form-control"
+							type="number"
+							name="price"
+							id="price"
+							step="0.01"
+							required
+							placeholder="Product Price"
+							min="1"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
+					<div class="col-sm-10">
+						<input
+							class="form-control"
+							type="number"
+							name="quantity"
+							id="quantity"
+							step="1"
+							required
+							placeholder="Product Quantity"
+							min="1"
+						/>
+					</div>
+				</div>
+
+				<div class="form-group mt-sm-5 mt-1 submitDiv">
+					<div class="row">
+						<div class="col-sm-6 text-center">
+							<button
+								type="button"
+								id="deleteBtn"
+								class="btn w-75 btn-outline-danger btn-md"
+							>
+								Delete
+							</button>
+						</div>
+						<div class="col-sm-6 mt-3 mt-sm-0 text-center">
+							<button type="submit" class="btn btn-success w-75 btn-md">
+								Save
+							</button>
+						</div>
+					</div>
+				</div>
+			</form>
+			<div
+				class="container errMessage text-danger text-center font-weight-bold"
+			></div>
+			<div
+				class="
+					container
+					successMessage
+					text-success text-center
+					font-weight-bold
+				"
+			></div>
+		</div>
+
+		<script>
+			const productLink = document.getElementById('pID').innerText;
+			const form = document.getElementById('editForm');
+			const errMsg = document.querySelector('.errMessage');
+			const successMsg = document.querySelector('.successMessage');
+			const deleteBtn = document.getElementById('deleteBtn');
+
+			// Selecting Input
+			const productName = document.getElementById('productName');
+			const description = document.getElementById('description');
+			const price = document.getElementById('price');
+			const quantity = document.getElementById('quantity');
+
+			const loadData = (product) => {
+				productName.value = product.productName;
+				description.value = product.description;
+				price.value = product.price;
+				quantity.value = product.quantity;
+			};
+
+			// To fill the fields with the data
+			(async () => {
+				try {
+					successMsg.innerText = '';
+					errMsg.innerText = '';
+					// POST method
+					const res = await fetch(`/product/${productLink}`, {
+						method: 'GET',
+						mode: 'cors',
+						cache: 'default',
+						headers: { 'Content-Type': 'application/json' },
+					})
+						.then((res) => res.json())
+						.then((json) => {
+							loadData(json);
+						});
+				} catch (error) {
+					errMsg.innerText = 'Something Went Wrong.';
+				}
+			})();
+
+			// To Send PUT Request
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault();
+				successMsg.innerText = '';
+				errMsg.innerText = '';
+				const productObj = {
+					productName: productName.value,
+					description: description.value,
+					price: price.value,
+					quantity: quantity.value,
+				};
+				try {
+					// PUT method
+					const res = await fetch(`/product/${productLink}`, {
+						method: 'PUT',
+						body: JSON.stringify(productObj),
+						headers: { 'Content-Type': 'application/json' },
+					})
+						.then((res) => res.json())
+						.then((json) => {
+							if (json.error) {
+								errMsg.innerText = 'Something Went Wrong.';
+							} else {
+								successMsg.textContent = json;
+							}
+						});
+				} catch (err) {
+					errMsg.innerText = 'Something Went Wrong.';
+				}
+			});
+
+			// to handle delete request
+			deleteBtn.addEventListener('click', async () => {
+				try {
+					successMsg.innerText = '';
+					errMsg.innerText = '';
+					// PUT method
+					const res = await fetch(`/product/${productLink}`, {
+						method: 'DELETE',
+					})
+						.then((res) => res.json())
+						.then((json) => {
+							if (json.error) {
+								errMsg.innerText = 'Something Went Wrong.';
+							} else {
+								location.href = '/admin/product';
+							}
+						});
+				} catch (err) {
+					errMsg.innerText = 'Something Went Wrong.';
+				}
+			});
+		</script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+			integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+			integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>

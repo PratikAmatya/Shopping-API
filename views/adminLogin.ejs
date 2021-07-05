@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- internal CSS -->
+		<style>
+			/* For centering the main section */
+			#mainDiv {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+			}
+		</style>
+		<title>Admin Form</title>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+			integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+			crossorigin="anonymous"
+		/>
+		<style>
+			body {
+				font-size: 0.9em;
+			}
+		</style>
+	</head>
+	<body class="bg-dark">
+		<!-- main -->
+		<main class="container p-3 p-sm-5 rounded bg-light" id="mainDiv">
+			<!-- span -->
+			<span class="h4">ONLINE PASAL ADMIN LOGIN</span>
+			<!-- form -->
+			<form id="loginForm">
+				<div class="form-group mt-3">
+					<label for="email" class="text-uppercase">Email Address</label>
+					<input
+						type="email"
+						name="email"
+						id="email"
+						class="form-control form-control-lg"
+						required
+					/>
+					<div class="emailError text-danger"></div>
+				</div>
+				<div class="form-group mb-0">
+					<label for="password" class="text-uppercase mt-1">Password</label>
+					<input
+						type="password"
+						name="password"
+						id="password"
+						minlength="6"
+						class="form-control form-control-lg"
+						required
+					/>
+					<div class="passwordError text-danger"></div>
+				</div>
+			</form>
+			<!-- login button -->
+			<button type="submit" form="loginForm" class="btn-dark btn mt-4 px-4">
+				Login
+			</button>
+		</main>
+
+		<script>
+			const form = document.getElementById('loginForm');
+			const emailError = document.querySelector('.emailError');
+			const passwordError = document.querySelector('.passwordError');
+
+			form.addEventListener('submit', async (e) => {
+				e.preventDefault();
+				// Resetting the values for error
+				emailError.textContent = passwordError.textContent = '';
+
+				const email = form.email.value;
+				const password = form.password.value;
+
+				try {
+					const res = await fetch('/admin', {
+						method: 'POST',
+						body: JSON.stringify({ email, password }),
+						headers: { 'Content-Type': 'application/json' },
+					});
+
+					const data = await res.json();
+					if (data.error) {
+						emailError.textContent = data.error.email;
+						passwordError.textContent = data.error.password;
+					}
+					if (data.admin) {
+						location.assign('/admin/product');
+					}
+				} catch (error) {
+					console.log(error);
+				}
+			});
+		</script>
+		<!-- script for bootstrap -->
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+			integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+			crossorigin="anonymous"
+		></script>
+	</body>
+</html>
